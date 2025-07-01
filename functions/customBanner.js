@@ -1,10 +1,10 @@
 const phrases = [ 
-    "[🌿] Non Skeetless dude.",
-    "[🌿] Khanware on top.",
-    "[🌿] Nix said hello!",
-    "[🌿] God i wish i had Khanware.",
-    "[🌿] Get good get Khanware!",
-    "[🌿] khanware.space goes brrrrr" 
+    "[💎] Pastel de strogonoff.",
+    "[💎] Nix programou isso.",
+    "[💎] Hardtekk é muito bom.",
+    "[💎] kassadin level 16.",
+    "[💎] Porque você ligou isso?",
+    "[💎] não sei oque colocar aqui :c" 
 ];
 
 setInterval(() => { 
