@@ -69,7 +69,7 @@ function handleInput(ids, callback = null) {
     });
 }
 
-/* Watermark estilo "AMWARE" neon */
+// Watermark estilo "AMWARE" neon
 Object.assign(watermark.style, {
   position: 'fixed',
   top: '0',
@@ -129,7 +129,7 @@ document.addEventListener('mousemove', e => {
   }
 });
 
-/* Dropdown atualizado visualmente */
+// Dropdown estilizado
 Object.assign(dropdownMenu.style, {
   position: 'absolute',
   top: '100%',
@@ -161,7 +161,6 @@ dropdownMenu.innerHTML = `
       gap: 8px;
       padding: 10px;
     }
-
     input[type="checkbox"] {
       appearance: none;
       width: 15px;
@@ -173,12 +172,10 @@ dropdownMenu.innerHTML = `
       cursor: pointer;
       transition: background-color 0.2s;
     }
-
     input[type="checkbox"]:checked {
       background-color: #80bfff;
       border-color: #1a75ff;
     }
-
     input[type="text"], input[type="number"], input[type="range"] {
       width: 100%;
       border: 1px solid #333;
@@ -189,7 +186,6 @@ dropdownMenu.innerHTML = `
       font-family: 'Segoe UI', Tahoma, sans-serif;
       outline: none;
     }
-
     label {
       display: flex;
       align-items: center;
@@ -206,16 +202,20 @@ dropdownMenu.innerHTML = `
 
 watermark.appendChild(dropdownMenu);
 
-/* Evento de clique para abrir/fechar o menu */
-watermark.addEventListener('click', () => {
-  const isVisible = dropdownMenu.style.display === 'flex';
-  dropdownMenu.style.display = isVisible ? 'none' : 'flex';
-  playAudio(isVisible
-    ? 'https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/rqizlm03.wav'
-    : 'https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/3kd01iyj.wav'
-  );
+// Abre/fecha menu só ao clicar no texto AMWARE
+watermark.addEventListener('click', (e) => {
+  if (dropdownMenu.contains(e.target)) return;
+  if (e.target.tagName === 'SPAN') {
+    const isVisible = dropdownMenu.style.display === 'flex';
+    dropdownMenu.style.display = isVisible ? 'none' : 'flex';
+    playAudio(isVisible
+      ? 'https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/rqizlm03.wav'
+      : 'https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/3kd01iyj.wav'
+    );
+  }
 });
 
+// Lista de recursos
 let featuresList = [
   { name: 'questionSpoof', type: 'checkbox', variable: 'features.questionSpoof', attributes: 'checked', labeled: true, label: 'Question Spoof' },
   { name: 'videoSpoof', type: 'checkbox', variable: 'features.videoSpoof', attributes: 'checked', labeled: true, label: 'Video Spoof' },
