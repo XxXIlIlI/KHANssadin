@@ -81,7 +81,7 @@ Object.assign(watermark.style, {
   alignItems: 'center',
   justifyContent: 'center',
   zIndex: '1001',
-  cursor: 'default',
+  cursor: 'pointer',
   userSelect: 'none',
   transition: 'transform 0.3s ease',
   backdropFilter: 'blur(4px)'
@@ -206,6 +206,16 @@ dropdownMenu.innerHTML = `
 
 watermark.appendChild(dropdownMenu);
 
+/* Evento de clique para abrir/fechar o menu */
+watermark.addEventListener('click', () => {
+  const isVisible = dropdownMenu.style.display === 'flex';
+  dropdownMenu.style.display = isVisible ? 'none' : 'flex';
+  playAudio(isVisible
+    ? 'https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/rqizlm03.wav'
+    : 'https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/3kd01iyj.wav'
+  );
+});
+
 let featuresList = [
   { name: 'questionSpoof', type: 'checkbox', variable: 'features.questionSpoof', attributes: 'checked', labeled: true, label: 'Question Spoof' },
   { name: 'videoSpoof', type: 'checkbox', variable: 'features.videoSpoof', attributes: 'checked', labeled: true, label: 'Video Spoof' },
@@ -239,13 +249,4 @@ handleInput('onekoJs', checked => {
   if (onekoEl) {
     onekoEl.style.display = checked ? null : "none";
   }
-});
-
-watermark.addEventListener('mouseenter', () => {
-  dropdownMenu.style.display = 'flex';
-  playAudio('https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/3kd01iyj.wav');
-});
-watermark.addEventListener('mouseleave', e => {
-  !watermark.contains(e.relatedTarget) && (dropdownMenu.style.display = 'none');
-  playAudio('https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/rqizlm03.wav');
 });
