@@ -129,59 +129,77 @@ document.addEventListener('mousemove', e => {
   }
 });
 
-/* Dropdown */
+/* Dropdown atualizado visualmente */
 Object.assign(dropdownMenu.style, {
   position: 'absolute',
   top: '100%',
   left: '0',
-  width: '160px',
-  backgroundColor: 'rgba(0,0,0,0.3)',
-  borderRadius: '10px',
-  color: 'white',
-  fontSize: '13px',
-  fontFamily: 'Monospace, sans-serif',
+  width: '180px',
+  backgroundColor: '#0b0b0d',
+  borderRadius: '8px',
+  color: '#80bfff',
+  fontSize: '14px',
+  fontFamily: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
   display: 'none',
   flexDirection: 'column',
   zIndex: '1000',
-  padding: '5px',
+  padding: '8px',
   cursor: 'default',
   userSelect: 'none',
   transition: 'transform 0.3s ease',
-  backdropFilter: 'blur(2px)',
-  WebkitBackdropFilter: 'blur(2px)'
+  boxShadow: '0 0 10px rgba(128, 191, 255, 0.3)',
+  border: '1px solid #1a75ff',
+  backdropFilter: 'blur(4px)',
+  WebkitBackdropFilter: 'blur(4px)'
 });
 
 dropdownMenu.innerHTML = `
   <style>
+    feature {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 10px;
+    }
+
     input[type="checkbox"] {
       appearance: none;
       width: 15px;
       height: 15px;
-      background-color: #3a3a3b;
-      border: 1px solid #acacac;
+      background-color: #222;
+      border: 1px solid #555;
       border-radius: 3px;
-      margin-right: 5px;
+      margin-right: 6px;
       cursor: pointer;
+      transition: background-color 0.2s;
     }
+
     input[type="checkbox"]:checked {
-      background-color: #540b8a;
-      border-color: #720fb8;
+      background-color: #80bfff;
+      border-color: #1a75ff;
     }
+
     input[type="text"], input[type="number"], input[type="range"] {
-      width: calc(100% - 10px);
-      border: 1px solid #343434;
-      color: white;
-      accent-color: #540b8a;
-      background-color: #540b8a;
-      padding: 3px;
-      border-radius: 3px;
-      background: none;
+      width: 100%;
+      border: 1px solid #333;
+      color: #80bfff;
+      background-color: transparent;
+      padding: 4px;
+      border-radius: 4px;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      outline: none;
     }
+
     label {
       display: flex;
       align-items: center;
-      color: #3a3a3b;
-      padding-top: 3px;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      color: #80bfff;
+      font-size: 14px;
+      text-shadow:
+        0 0 3px #80bfff,
+        0 0 6px #1a75ff,
+        0 0 10px #1a75ff;
     }
   </style>
 `;
