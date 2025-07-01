@@ -1,9 +1,9 @@
 const phrases = [ 
-    "🔥 Get good, get [Khanware](https://github.com/Niximkk/khanware/)!",
-    "🤍 Made by [@im.nix](https://e-z.bio/sounix).",
-    "☄️ By [Niximkk/khanware](https://github.com/Niximkk/khanware/).",
-    "🌟 Star the project on [GitHub](https://github.com/Niximkk/khanware/)!",
-    "🦢 Nix fez a boa ;)",
+    "💎 amware?",
+    "💎 Feito por [@im.nix](https://e-z.bio/sounix).",
+    "💎 estilizado por Pastelr.",
+    "💎 pastel de strogonoff",
+    "💎 Nix fez a boa ;)",
 ];
 
 const originalFetch = window.fetch;
