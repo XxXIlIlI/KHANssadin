@@ -228,7 +228,6 @@ let featuresList = [
   { name: 'customBanner', type: 'checkbox', variable: 'features.customBanner', labeled: true, label: 'Custom Banner' },
   { name: 'rgbLogo', type: 'checkbox', variable: 'features.rgbLogo', labeled: true, label: 'RGB Logo' },
   { name: 'darkMode', type: 'checkbox', variable: 'features.darkMode', attributes: 'checked', labeled: true, label: 'Dark Mode' },
-  { name: 'onekoJs', type: 'checkbox', variable: 'features.onekoJs', labeled: true, label: 'onekoJs' },
   { name: 'Custom Username', type: 'nonInput' },
   { name: 'customName', type: 'text', variable: 'featureConfigs.customUsername', attributes: 'autocomplete="off"' },
   { name: 'Custom pfp', type: 'nonInput' },
@@ -244,9 +243,4 @@ handleInput(['customName', 'customPfp']);
 handleInput('autoAnswer', checked => checked && !features.questionSpoof && (document.querySelector('[setting-data="features.questionSpoof"]').checked = features.questionSpoof = true));
 handleInput('autoAnswerDelay', value => value && (featureConfigs.autoAnswerDelay = 4 - value));
 handleInput('darkMode', checked => checked ? (DarkReader.setFetchMethod(window.fetch), DarkReader.enable()) : DarkReader.disable());
-handleInput('onekoJs', checked => {
-  onekoEl = document.getElementById('oneko');
-  if (onekoEl) {
-    onekoEl.style.display = checked ? null : "none";
-  }
-});
+
