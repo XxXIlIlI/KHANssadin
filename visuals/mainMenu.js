@@ -100,7 +100,7 @@ watermark.innerHTML = `
       0 0 10px #80bfff,
       0 0 20px #1a75ff,
       0 0 30px #1a75ff;
-  ">  KHANssadin</span>
+  ">  KHANSSADIN</span>
 `;
 
 document.body.appendChild(watermark);
