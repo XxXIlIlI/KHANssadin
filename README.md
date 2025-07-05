@@ -6,6 +6,6 @@ You should have received a copy of the GNU General Public License along with thi
 
 <p align="center">
   <a href="https://emoji.gg/emoji/5349-hellokittybyebye">
-    <img src="(https://static.wikia.nocookie.net/leagueoflegends/images/7/79/Kassadin_Render.png/revision/latest?cb=20150723051436&path-prefix=pt-br)" width="128px" height="128px" alt="HelloKittyByeBye">
+    <img src="https://static.wikia.nocookie.net/leagueoflegends/images/7/79/Kassadin_Render.png/revision/latest?cb=20150723051436&path-prefix=pt-br" width="128px" height="128px" alt="HelloKittyByeBye">
   </a>
 </p>
