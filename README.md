@@ -5,7 +5,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 <p align="center">
-  <a href="https://emoji.gg/emoji/5349-hellokittybyebye">
-    <img src="https://static.wikia.nocookie.net/leagueoflegends/images/7/79/Kassadin_Render.png/revision/latest?cb=20150723051436&path-prefix=pt-br" width="128px" height="128px" alt="HelloKittyByeBye">
+  <a href="[https://emoji.gg/emoji/5349-hellokittybyebye](https://leagueoflegends.fandom.com/pt-br/wiki/Kassadin/História)">
+    <img src="https://static.wikia.nocookie.net/leagueoflegends/images/7/79/Kassadin_Render.png/revision/latest?cb=20150723051436&path-prefix=pt-br" width="128px" height="128px" alt="KASSADIN">
   </a>
 </p>
