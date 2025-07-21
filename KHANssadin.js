@@ -106,12 +106,14 @@ loadScript('https://cdn.jsdelivr.net/npm/toastify-js', 'toastifyPlugin')
     .then(async response => { let data = await response.json(); user = { nickname: data.data.user.nickname, username: data.data.user.username, UID: data.data.user.id.slice(-5) }; })
     
     sendToast("💎 KHANSSADIN injetado com sucesso!");
+
+    sendToast("💎 discord: PASTELr");
     
     playAudio('https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/gcelzszy.wav');
     
     await delay(500);
     
-    sendToast(`⭐ Bem vindo(a) de volta: ${user.nickname}`);
+    sendToast(`💎 Bem vindo(a) de volta: ${user.nickname}`);
     if(device.apple) { await delay(500); sendToast(`🪽 Que tal comprar um Samsung?`); }
     
     loadedPlugins.forEach(plugin => sendToast(`🪝 ${plugin} Loaded!`, 2000, 'top') );
