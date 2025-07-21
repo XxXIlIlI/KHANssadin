@@ -1,222 +1,246 @@
 const setFeatureByPath = (path, value) => {
   let obj = window;
   const parts = path.split('.');
-  while (parts.length > 1) obj = obj[parts.shift()];
-  obj[parts[0]] = value;
+  for (let i = 0; i < parts.length - 1; i++) {
+    obj = obj[parts[i]] ?? (obj[parts[i]] = {});
+  }
+  obj[parts[parts.length - 1]] = value;
 };
 
-function addFeature(features) {
-  const feature = document.createElement('feature');
-  features.forEach(attribute => {
-    let element = attribute.type === 'nonInput' ? document.createElement('label') : document.createElement('input');
-    if (attribute.type === 'nonInput') element.innerHTML = attribute.name;
-    else {
-      element.type = attribute.type;
-      element.id = attribute.name;
+const createElementWithAttributes = (tag, attributes = {}) => {
+  const element = document.createElement(tag);
+  Object.entries(attributes).forEach(([key, value]) => {
+    if (key === 'style') {
+      element.style.cssText = value;
+    } else if (key === 'className') {
+      element.classList.add(value);
+    } else {
+      element.setAttribute(key, value);
     }
+  });
+  return element;
+};
 
-    if (attribute.attributes) {
-      attribute.attributes.split(' ').map(attr => attr.split('=')).forEach(([key, value]) => {
-        value = value ? value.replace(/"/g, '') : '';
-        key === 'style' ? element.style.cssText = value : element.setAttribute(key, value);
+const addFeature = (features, container) => {
+  const feature = createElementWithAttributes('feature', { className: 'feature' });
+  features.forEach(({ name, type, variable, attributes, dependent, className, labeled, label }) => {
+    const isInput = type !== 'nonInput';
+    const element = createElementWithAttributes(isInput ? 'input' : 'label', {
+      type: isInput ? type : undefined,
+      id: isInput ? name : undefined,
+      innerHTML: isInput ? undefined : name,
+      'setting-data': variable,
+      dependent,
+      className,
+    });
+
+    if (attributes) {
+      attributes.split(' ').forEach(attr => {
+        const [key, value = ''] = attr.split('=');
+        element.setAttribute(key, value.replace(/"/g, ''));
       });
     }
 
-    if (attribute.variable) element.setAttribute('setting-data', attribute.variable);
-    if (attribute.dependent) element.setAttribute('dependent', attribute.dependent);
-    if (attribute.className) element.classList.add(attribute.className);
-
-    if (attribute.labeled) {
-      const label = document.createElement('label');
-      if (attribute.className) label.classList.add(attribute.className);
-      if (attribute.attributes) {
-        attribute.attributes.split(' ').map(attr => attr.split('=')).forEach(([key, value]) => {
-          value = value ? value.replace(/"/g, '') : '';
-          key === 'style' ? label.style.cssText = value : label.setAttribute(key, value);
-        });
-      }
-      label.innerHTML = `${element.outerHTML} ${attribute.label}`;
-      feature.appendChild(label);
+    if (labeled) {
+      const labelElement = createElementWithAttributes('label', { className });
+      labelElement.innerHTML = `${element.outerHTML} ${label}`;
+      feature.appendChild(labelElement);
     } else {
       feature.appendChild(element);
     }
   });
-  dropdownMenu.innerHTML += feature.outerHTML;
-}
+  container.innerHTML += feature.outerHTML;
+};
 
-function handleInput(ids, callback = null) {
-  (Array.isArray(ids) ? ids.map(id => document.getElementById(id)) : [document.getElementById(ids)])
-    .forEach(element => {
-      if (!element) return;
-      const setting = element.getAttribute('setting-data'),
-        dependent = element.getAttribute('dependent'),
-        handleEvent = (e, value) => {
-          setFeatureByPath(setting, value);
-          if (callback) callback(value, e);
-        };
+const handleInput = (ids, callback) => {
+  const elements = (Array.isArray(ids) ? ids : [ids]).map(id => document.getElementById(id)).filter(Boolean);
+  elements.forEach(element => {
+    const setting = element.getAttribute('setting-data');
+    const dependent = element.getAttribute('dependent');
+    const handleEvent = (e, value) => {
+      setFeatureByPath(setting, value);
+      if (callback) callback(value, e);
+    };
 
+    const eventType = element.type === 'checkbox' ? 'change' : 'input';
+    element.addEventListener(eventType, e => {
+      const value = element.type === 'checkbox' ? e.target.checked : e.target.value;
       if (element.type === 'checkbox') {
-        element.addEventListener('change', (e) => {
-          playAudio('https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/5os0bypi.wav');
-          handleEvent(e, e.target.checked);
-          if (dependent) dependent.split(',').forEach(dep =>
-            document.querySelectorAll(`.${dep}`).forEach(depEl =>
-              depEl.style.display = e.target.checked ? null : "none"));
-        });
-      } else {
-        element.addEventListener('input', (e) => handleEvent(e, e.target.value));
+        playAudio('https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/5os0bypi.wav');
+        if (dependent) {
+          dependent.split(',').forEach(dep => {
+            document.querySelectorAll(`.${dep}`).forEach(depEl => {
+              depEl.style.display = e.target.checked ? '' : 'none';
+            });
+          });
+        }
       }
+      handleEvent(e, value);
     });
-}
+  });
+};
 
-// Watermark estilo "AMWARE" neon
-Object.assign(watermark.style, {
-  position: 'fixed',
-  top: '0',
-  left: '85%',
-  padding: '8px 16px',
-  backgroundColor: 'rgba(0, 0, 0, 0.6)',
-  borderRadius: '12px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  zIndex: '1001',
-  cursor: 'pointer',
-  userSelect: 'none',
-  transition: 'transform 0.3s ease',
-  backdropFilter: 'blur(4px)'
-});
-
-if (device.mobile) watermark.style.left = '55%';
-
-watermark.innerHTML = `
-  <span style="
-    font-size: 24px;
-    font-weight: bold;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #80bfff;
-    text-shadow:
-      0 0 5px #80bfff,
-      0 0 10px #80bfff,
-      0 0 20px #1a75ff,
-      0 0 30px #1a75ff;
-  ">  KHANSSADIN</span>
-`;
-
-document.body.appendChild(watermark);
-
-let isDragging = false, offsetX, offsetY;
-
-watermark.addEventListener('mousedown', e => {
-  if (!dropdownMenu.contains(e.target)) {
-    isDragging = true;
-    offsetX = e.clientX - watermark.offsetLeft;
-    offsetY = e.clientY - watermark.offsetTop;
-    watermark.style.transform = 'scale(0.9)';
-  }
-});
-watermark.addEventListener('mouseup', () => {
-  isDragging = false;
-  watermark.style.transform = 'scale(1)';
-});
-
-document.addEventListener('mousemove', e => {
-  if (isDragging) {
-    let newX = Math.max(0, Math.min(e.clientX - offsetX, window.innerWidth - watermark.offsetWidth));
-    let newY = Math.max(0, Math.min(e.clientY - offsetY, window.innerHeight - watermark.offsetHeight));
-    Object.assign(watermark.style, { left: `${newX}px`, top: `${newY}px` });
-    dropdownMenu.style.display = 'none';
-  }
-});
-
-// Dropdown estilizado
-Object.assign(dropdownMenu.style, {
-  position: 'absolute',
-  top: '100%',
-  left: '0',
-  width: '180px',
-  backgroundColor: '#0b0b0d',
-  borderRadius: '8px',
-  color: '#80bfff',
-  fontSize: '14px',
-  fontFamily: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
-  display: 'none',
-  flexDirection: 'column',
-  zIndex: '1000',
-  padding: '8px',
-  cursor: 'default',
-  userSelect: 'none',
-  transition: 'transform 0.3s ease',
-  boxShadow: '0 0 10px rgba(128, 191, 255, 0.3)',
-  border: '1px solid #1a75ff',
-  backdropFilter: 'blur(4px)',
-  WebkitBackdropFilter: 'blur(4px)'
-});
-
-dropdownMenu.innerHTML = `
-  <style>
-    feature {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      padding: 10px;
-    }
-    input[type="checkbox"] {
-      appearance: none;
-      width: 15px;
-      height: 15px;
-      background-color: #222;
-      border: 1px solid #555;
-      border-radius: 3px;
-      margin-right: 6px;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-    input[type="checkbox"]:checked {
-      background-color: #80bfff;
-      border-color: #1a75ff;
-    }
-    input[type="text"], input[type="number"], input[type="range"] {
-      width: 100%;
-      border: 1px solid #333;
-      color: #80bfff;
-      background-color: transparent;
-      padding: 4px;
-      border-radius: 4px;
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      outline: none;
-    }
-    label {
+const setupWatermark = () => {
+  const watermark = createElementWithAttributes('div', {
+    id: 'watermark',
+    style: `
+      position: fixed;
+      top: 10px;
+      left: ${device.mobile ? '55%' : '85%'};
+      padding: 10px 20px;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 12px;
       display: flex;
       align-items: center;
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      color: #80bfff;
+      justify-content: center;
+      z-index: 1001;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 4px 15px rgba(128, 191, 255, 0.4);
+    `,
+  });
+
+  watermark.innerHTML = `
+    <span style="
+      font-size: 26px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      color: #66ccff;
+      text-shadow: 0 0 8px #66ccff, 0 0 12px #3399ff, 0 0 16px #3399ff;
+    ">KHANSSADIN</span>
+  `;
+
+  document.body.appendChild(watermark);
+  return watermark;
+};
+
+const setupDropdown = (watermark) => {
+  const dropdownMenu = createElementWithAttributes('div', {
+    id: 'dropdownMenu',
+    style: `
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 200px;
+      background: linear-gradient(145deg, #0d0d0f, #1a1a1e);
+      border-radius: 10px;
+      color: #66ccff;
       font-size: 14px;
-      text-shadow:
-        0 0 3px #80bfff,
-        0 0 6px #1a75ff,
-        0 0 10px #1a75ff;
+      font-family: 'Montserrat', sans-serif;
+      display: none;
+      flex-direction: column;
+      z-index: 1000;
+      padding: 12px;
+      box-shadow: 0 6px 20px rgba(128, 191, 255, 0.5);
+      border: 1px solid #3399ff;
+      backdrop-filter: blur(8px);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    `,
+  });
+
+  dropdownMenu.innerHTML = `
+    <style>
+      .feature {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px;
+      }
+      input[type="checkbox"] {
+        appearance: none;
+        width: 16px;
+        height: 16px;
+        background: #1a1a1e;
+        border: 2px solid #66ccff;
+        border-radius: 4px;
+        margin-right: 8px;
+        cursor: pointer;
+        transition: background 0.2s, border-color 0.2s;
+      }
+      input[type="checkbox"]:checked {
+        background: #66ccff;
+        border-color: #3399ff;
+      }
+      input[type="text"], input[type="number"], input[type="range"] {
+        width: 100%;
+        border: 1px solid #3399ff;
+        color: #66ccff;
+        background: transparent;
+        padding: 6px;
+        border-radius: 6px;
+        font-family: 'Montserrat', sans-serif;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      input[type="text"]:focus, input[type="number"]:focus, input[type="range"]:focus {
+        border-color: #80bfff;
+        box-shadow: 0 0 5px rgba(128, 191, 255, 0.5);
+      }
+      label {
+        display: flex;
+        align-items: center;
+        font-family: 'Montserrat', sans-serif;
+        color: #66ccff;
+        font-size: 14px;
+        text-shadow: 0 0 4px #66ccff, 0 0 8px #3399ff;
+      }
+      label:hover {
+        color: #80bfff;
+      }
+    </style>
+  `;
+
+  watermark.appendChild(dropdownMenu);
+  return dropdownMenu;
+};
+
+const setupDrag = (watermark) => {
+  let isDragging = false, offsetX, offsetY;
+  watermark.addEventListener('mousedown', e => {
+    if (!dropdownMenu.contains(e.target)) {
+      isDragging = true;
+      offsetX = e.clientX - watermark.offsetLeft;
+      offsetY = e.clientY - watermark.offsetTop;
+      watermark.style.transform = 'scale(0.95)';
     }
-  </style>
-`;
+  });
 
-watermark.appendChild(dropdownMenu);
+  watermark.addEventListener('mouseup', () => {
+    isDragging = false;
+    watermark.style.transform = 'scale(1)';
+  });
 
-// Abre/fecha menu só ao clicar no texto AMWARE
-watermark.addEventListener('click', (e) => {
-  if (dropdownMenu.contains(e.target)) return;
-  if (e.target.tagName === 'SPAN') {
+  document.addEventListener('mousemove', e => {
+    if (isDragging) {
+      const newX = Math.max(0, Math.min(e.clientX - offsetX, window.innerWidth - watermark.offsetWidth));
+      const newY = Math.max(0, Math.min(e.clientY - offsetY, window.innerHeight - watermark.offsetHeight));
+      watermark.style.left = `${newX}px`;
+      watermark.style.top = `${newY}px`;
+      dropdownMenu.style.display = 'none';
+    }
+  });
+};
+
+const setupToggle = (watermark, dropdownMenu) => {
+  watermark.addEventListener('click', e => {
+    if (dropdownMenu.contains(e.target) || e.target.tagName !== 'SPAN') return;
     const isVisible = dropdownMenu.style.display === 'flex';
     dropdownMenu.style.display = isVisible ? 'none' : 'flex';
     playAudio(isVisible
       ? 'https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/rqizlm03.wav'
       : 'https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/3kd01iyj.wav'
     );
-  }
-});
+  });
+};
 
-// Lista de recursos
-let featuresList = [
+const watermark = setupWatermark();
+const dropdownMenu = setupDropdown(watermark);
+setupDrag(watermark);
+setupToggle(watermark, dropdownMenu);
+
+const featuresList = [
   { name: 'questionSpoof', type: 'checkbox', variable: 'features.questionSpoof', attributes: 'checked', labeled: true, label: 'Question Spoof' },
   { name: 'videoSpoof', type: 'checkbox', variable: 'features.videoSpoof', attributes: 'checked', labeled: true, label: 'Video Spoof' },
   { name: 'showAnswers', type: 'checkbox', variable: 'features.showAnswers', labeled: true, label: 'Answer Revealer' },
@@ -230,16 +254,27 @@ let featuresList = [
   { name: 'Custom Username', type: 'nonInput' },
   { name: 'customName', type: 'text', variable: 'featureConfigs.customUsername', attributes: 'autocomplete="off"' },
   { name: 'Custom pfp', type: 'nonInput' },
-  { name: 'customPfp', type: 'text', variable: 'featureConfigs.customPfp', attributes: 'autocomplete="off"' }
+  { name: 'customPfp', type: 'text', variable: 'featureConfigs.customPfp', attributes: 'autocomplete="off"' },
+  { name: `${user.username} - UID: ${user.UID}`, type: 'nonInput', attributes: 'style="font-size:10px;padding-left:5px;"' },
 ];
 
-featuresList.push({ name: `${user.username} - UID: ${user.UID}`, type: 'nonInput', attributes: 'style="font-size:10px;"padding-left:5px;' });
-
-addFeature(featuresList);
-
+addFeature(featuresList, dropdownMenu);
 handleInput(['questionSpoof', 'videoSpoof', 'showAnswers', 'nextRecomendation', 'repeatQuestion', 'minuteFarm', 'customBanner', 'rgbLogo']);
 handleInput(['customName', 'customPfp']);
-handleInput('autoAnswer', checked => checked && !features.questionSpoof && (document.querySelector('[setting-data="features.questionSpoof"]').checked = features.questionSpoof = true));
-handleInput('autoAnswerDelay', value => value && (featureConfigs.autoAnswerDelay = 4 - value));
-handleInput('darkMode', checked => checked ? (DarkReader.setFetchMethod(window.fetch), DarkReader.enable()) : DarkReader.disable());
-
+handleInput('autoAnswer', checked => {
+  if (checked && !features.questionSpoof) {
+    const spoofCheckbox = document.querySelector('[setting-data="features.questionSpoof"]');
+    spoofCheckbox.checked = features.questionSpoof = true;
+  }
+});
+handleInput('autoAnswerDelay', value => {
+  if (value) featureConfigs.autoAnswerDelay = 4 - value;
+});
+handleInput('darkMode', checked => {
+  if (checked) {
+    DarkReader.setFetchMethod(window.fetch);
+    DarkReader.enable();
+  } else {
+    DarkReader.disable();
+  }
+});
