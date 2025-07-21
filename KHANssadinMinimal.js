@@ -1,20 +1,20 @@
 let loadedPlugins = [];
 
-/* Element(s?) */
+
 const splashScreen = document.createElement('splashScreen');
 
-/* Misc Styles */
+
 document.head.appendChild(Object.assign(document.createElement("style"),{innerHTML:"@font-face{font-family:'MuseoSans';src:url('https://corsproxy.io/?url=https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/ynddewua.ttf')format('truetype')}" }));
 document.head.appendChild(Object.assign(document.createElement('style'),{innerHTML:"::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: #f1f1f1; } ::-webkit-scrollbar-thumb { background: #888; border-radius: 10px; } ::-webkit-scrollbar-thumb:hover { background: #555; }"}));
 document.querySelector("link[rel~='icon']").href = 'https://r2.e-z.host/4d0a0bea-60f8-44d6-9e74-3032a64a9f32/ukh0rq22.png';
 
-/* Emmiter */
+
 class EventEmitter{constructor(){this.events={}}on(t,e){"string"==typeof t&&(t=[t]),t.forEach(t=>{this.events[t]||(this.events[t]=[]),this.events[t].push(e)})}off(t,e){"string"==typeof t&&(t=[t]),t.forEach(t=>{this.events[t]&&(this.events[t]=this.events[t].filter(t=>t!==e))})}emit(t,...e){this.events[t]&&this.events[t].forEach(t=>{t(...e)})}once(t,e){"string"==typeof t&&(t=[t]);let s=(...i)=>{e(...i),this.off(t,s)};this.on(t,s)}};
 const plppdo = new EventEmitter();
 
 new MutationObserver((mutationsList) => { for (let mutation of mutationsList) if (mutation.type === 'childList') plppdo.emit('domChanged'); }).observe(document.body, { childList: true, subtree: true });
 
-/* Misc Functions */
+
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 const playAudio = url => { const audio = new Audio(url); audio.play(); };
 const findAndClickBySelector = selector => { const element = document.querySelector(selector); if (element) { element.click(); sendToast(`⭕ Pressionando ${selector}...`, 1000); } };
@@ -27,9 +27,9 @@ async function hideSplashScreen() { splashScreen.style.opacity = '0'; setTimeout
 async function loadScript(url, label) { return fetch(url).then(response => response.text()).then(script => { loadedPlugins.push(label); eval(script); }); }
 async function loadCss(url) { return new Promise((resolve) => { const link = document.createElement('link'); link.rel = 'stylesheet'; link.type = 'text/css'; link.href = url; link.onload = () => resolve(); document.head.appendChild(link); }); }
 
-/* Main Functions */ 
+
 function setupMain(){
-    /* QuestionSpoof */
+    
     (function () {
         const phrases = [ 
             "🔥 Get good, get [Khanware](https://github.com/Niximkk/khanware/)!",
@@ -68,7 +68,7 @@ function setupMain(){
         };
     })();
 
-    /* VideoSpoof */
+
     (function () {
         const originalFetch = window.fetch;
 
@@ -94,7 +94,7 @@ function setupMain(){
         };
     })();
 
-    /* MinuteFarm */
+
     (function () {
         const originalFetch = window.fetch;
 
@@ -111,7 +111,7 @@ function setupMain(){
         };
     })();
 
-    /* AutoAnswer */
+
     (function () {
         const baseSelectors = [
             `[data-testid="choice-icon__library-choice-icon"]`,
@@ -139,7 +139,7 @@ function setupMain(){
         })();
     })();
 }
-/* Inject */
+
 if (!/^https?:\/\/([a-z0-9-]+\.)?khanacademy\.org/.test(window.location.href)) { alert("❌ Khanware Failed to Injected!\n\nVocê precisa executar o Khanware no site do Khan Academy! (https://pt.khanacademy.org/)"); window.location.href = "https://pt.khanacademy.org/"; }
 
 showSplashScreen();
