@@ -32,10 +32,10 @@ function setupMain(){
     
     (function () {
         const phrases = [ 
-            "🔥 Get good, get [Khanware](https://github.com/Niximkk/khanware/)!",
-            "🤍 Made by [@im.nix](https://e-z.bio/sounix).",
-            "☄️ By [Niximkk/khanware](https://github.com/Niximkk/khanware/).",
-            "🌟 Star the project on [GitHub](https://github.com/Niximkk/khanware/)!",
+            "[💎] Pastel. ",
+            "[💎] Não sei oque colocar aqui.",
+            "[💎] By [Niximkk](https://github.com/Niximkk).",
+            "[💎] pastel de novo. ",
             "🪶 Lite mode @ KhanwareMinimal.js",
         ];
         
