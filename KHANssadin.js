@@ -1,7 +1,7 @@
 const ver = "V3.1.1";
 let isDev = false;
 
-const repoPath = `https://raw.githubusercontent.com/XxXIlIlI/KHANssadin/refs/heads/${isDev ? "dev/" : "main/"}`;
+const repoPath = `https://raw.githubusercontent.com/XxXIlIlI/KASSADIN/refs/heads/${isDev ? "dev/" : "main/"}`;
 
 let device = {
     mobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Windows Phone|Mobile|Tablet|Kindle|Silk|PlayBook|BB10/i.test(navigator.userAgent),
