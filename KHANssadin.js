@@ -76,7 +76,6 @@ async function loadCss(url) { return new Promise((resolve) => { const link = doc
 function setupMenu() {
     loadScript(repoPath+'visuals/mainMenu.js', 'mainMenu');
     loadScript(repoPath+'visuals/statusPanel.js', 'statusPanel');
-    loadScript(repoPath+'visuals/widgetBot.js', 'widgetBot');
     if(isDev) loadScript(repoPath+'visuals/devTab.js', 'devTab');
 }
 
