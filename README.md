@@ -4,7 +4,7 @@
 javascript:fetch("https://raw.githubusercontent.com/XxXIlIlI/KHANssadin/refs/heads/main/KHANssadin.js")
   .then(t => t.text())
   .then(eval); 
-
+```
 
 Copyright (C) 2024 Nix
 
