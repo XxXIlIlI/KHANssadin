@@ -38,8 +38,6 @@ window.features = {
 };
 window.featureConfigs = {
     autoAnswerDelay: 3,
-    customUsername: "",
-    customPfp: ""
 };
 
 /* Security */
@@ -193,3 +191,4 @@ loadScript('https://cdn.jsdelivr.net/npm/toastify-js', 'toastifyPlugin')
 @antonio77xs
 @marcus.floriano.oliveira
 */
+
