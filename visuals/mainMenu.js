@@ -233,7 +233,7 @@ featuresList.push({ name: `${user.username} - UID: ${user.UID}`, type: 'nonInput
 
 addFeature(featuresList);
 
-handleInput(['questionSpoof', 'videoSpoof', 'showAnswers', 'nextRecomendation', 'repeatQuestion', 'minuteFarm', 'customBanner', 'rgbLogo']);
+handleInput(['questionSpoof', 'videoSpoof', 'showAnswers', 'nextRecomendation', 'repeatQuestion', 'minuteFarm', 'rgbLogo']);
 //aqui
 handleInput('autoAnswer', checked => checked && !features.questionSpoof && (document.querySelector('[setting-data="features.questionSpoof"]').checked = features.questionSpoof = true));
 handleInput('autoAnswerDelay', value => value && (featureConfigs.autoAnswerDelay = 4 - value));
