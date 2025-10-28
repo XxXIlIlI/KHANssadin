@@ -69,7 +69,7 @@ function handleInput(ids, callback = null) {
     });
 }
 
-// Watermark estilo "AMWARE" neon
+// Watermark estilo "AMWARE" neon .
 Object.assign(watermark.style, {
   position: 'fixed',
   top: '0',
